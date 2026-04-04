@@ -3,255 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF-AXL | Game Store</title>
+<title>FF-AXL | Pro Gaming Store</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;900&display=swap');
-    
-    :root {
-        --game-bg: #1a0f2e;
-        --game-sidebar: #0f081d;
-        --game-yellow: #ffcc00;
-        --game-card: #2d1b4d;
-        --game-accent: #00e5ff;
-    }
-
-    body {
-        background-color: var(--game-bg);
-        color: white;
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        user-select: none;
-    }
-
-    .game-container {
-        display: flex;
-        min-height: 100vh;
-    }
-
-    /* Sidebar Navigation */
-    .sidebar {
-        width: 75px;
-        background: var(--game-sidebar);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 20px;
-        border-right: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .nav-item {
-        width: 100%;
-        padding: 20px 0;
-        text-align: center;
-        cursor: pointer;
-        font-size: 9px;
-        font-weight: 900;
-        color: #555;
-        transition: 0.3s;
-    }
-
-    .nav-item.active {
-        color: var(--game-yellow);
-        background: linear-gradient(90deg, rgba(255,204,0,0.1), transparent);
-        border-left: 3px solid var(--game-yellow);
-    }
-
-    .main-content {
-        flex: 1;
-        padding: 15px;
-        background: radial-gradient(circle at top right, #2a1b3d, #1a0f2e);
-    }
-
-    /* UID Input Style */
-    .uid-box {
-        background: rgba(0,0,0,0.4);
-        border: 1px solid rgba(255,255,255,0.1);
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-    }
-
-    /* Card Styling with 60% Discount Look */
-    .item-card {
-        background: var(--game-card);
-        border-radius: 6px;
-        padding: 12px 8px;
-        text-align: center;
-        position: relative;
-        border-bottom: 3px solid rgba(0,0,0,0.4);
-        transition: transform 0.2s;
-    }
-
-    .item-card:active { transform: scale(0.95); }
-
-    .discount-badge {
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: #ff3e3e;
-        color: white;
-        font-size: 9px;
-        font-weight: 900;
-        padding: 2px 6px;
-        border-radius: 4px 0 10px 0;
-    }
-
-    .diamond-img {
-        width: 45px;
-        height: 45px;
-        margin: 5px auto;
-        filter: drop-shadow(0 0 8px var(--game-accent));
-    }
-
-    .old-price {
-        text-decoration: line-through;
-        color: #888;
-        font-size: 10px;
-        display: block;
-    }
-
-    .new-price {
-        background: var(--game-yellow);
-        color: black;
-        font-weight: 900;
-        padding: 4px;
-        border-radius: 3px;
-        margin-top: 5px;
-        display: block;
-        font-size: 13px;
-    }
-
-    /* Overlay */
-    #pay-modal {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.85);
-        display: none;
-        z-index: 1000;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    }
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;700;900&display=swap');
+:root { --ff-dark: #070912; --ff-card: #121625; --ff-accent: #00e5ff; }
+body { background-color: var(--ff-dark); color: #ffffff; font-family: 'Inter', sans-serif; user-select: none; }
+.ff-font { font-family: 'Oswald', sans-serif; }
+.card-pro { background: var(--ff-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; transition: 0.3s; }
+.card-pro.selected { border-color: var(--ff-accent); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); transform: translateY(-4px); }
+.ff-btn-main { background: linear-gradient(90deg, #00e5ff, #00a2ff); color: #000; font-weight: 900; text-transform: uppercase; }
+#payment-overlay { transition: 0.4s; transform: translateY(100%); display: none; z-index: 100; position: fixed; inset: 0; background: #070912; }
+#payment-overlay.show { transform: translateY(0); display: flex; flex-direction: column; }
+.qr-frame { background: white; padding: 12px; border-radius: 16px; display: inline-block; }
 </style>
 </head>
-<body>
+<body class="pb-20">
 
-<div class="game-container">
-    <div class="sidebar">
-        <div class="nav-item active" onclick="tab('topup')">
-            <i class="fas fa-gem text-xl mb-1"></i><br>TOP-UP
+<header class="py-12 text-center border-b border-white/10">
+    <h1 class="ff-font text-5xl font-bold italic uppercase">FF-AXL <span class="text-cyan-400">PRO</span></h1>
+</header>
+
+<main class="max-w-md mx-auto px-6 mt-8 space-y-6">
+    <div class="card-pro p-6">
+        <label class="text-[10px] font-black text-gray-500 uppercase block mb-2">Player UID</label>
+        <input type="number" id="uid" placeholder="ENTER UID" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xl font-bold text-white outline-none">
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, 'Weekly', 32)">
+            <p class="text-xs text-gray-400">Weekly</p>
+            <p class="text-xl font-black">₹32</p>
         </div>
-        <div class="nav-item" onclick="tab('member')">
-            <i class="fas fa-crown text-xl mb-1"></i><br>VIP
+        <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, '100 Diamonds', 16)">
+            <p class="text-xs text-gray-400">100 💎</p>
+            <p class="text-xl font-black">₹16</p>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="uid-box">
-            <p class="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-2">Player Identification</p>
-            <input type="number" id="uid" placeholder="ENTER UID" class="w-full bg-black/40 border-none p-3 rounded text-cyan-400 font-black outline-none italic">
-        </div>
+    <button onclick="openPay()" class="w-full ff-btn-main py-5 rounded-2xl text-xl font-black">Proceed to Pay</button>
+</main>
 
-        <div id="topup-box" class="grid grid-cols-2 gap-3">
-            <div class="item-card" onclick="pay('100 Diamonds', 32)">
-                <div class="discount-badge">-60%</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-img">
-                <p class="text-[11px] font-bold">100 Diamonds</p>
-                <span class="old-price">₹80</span>
-                <span class="new-price">₹32.00</span>
-            </div>
-            <div class="item-card" onclick="pay('310 Diamonds', 96)">
-                <div class="discount-badge">-60%</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-img">
-                <p class="text-[11px] font-bold">310 Diamonds</p>
-                <span class="old-price">₹240</span>
-                <span class="new-price">₹96.00</span>
-            </div>
-            <div class="item-card" onclick="pay('520 Diamonds', 160)">
-                <div class="discount-badge">-60%</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-img">
-                <p class="text-[11px] font-bold">520 Diamonds</p>
-                <span class="old-price">₹400</span>
-                <span class="new-price">₹160.00</span>
-            </div>
-            <div class="item-card" onclick="pay('1060 Diamonds', 320)">
-                <div class="discount-badge">-60%</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-img">
-                <p class="text-[11px] font-bold">1060 Diamonds</p>
-                <span class="old-price">₹800</span>
-                <span class="new-price">₹320.00</span>
-            </div>
-        </div>
-
-        <div id="member-box" class="hidden space-y-3">
-            <div class="item-card flex justify-between items-center px-4" onclick="pay('Weekly Lite', 20)">
-                <div class="text-left">
-                    <p class="text-cyan-400 font-black italic">WEEKLY LITE</p>
-                    <span class="old-price">₹50</span>
-                </div>
-                <span class="new-price px-5">₹20.00</span>
-            </div>
-            <div class="item-card flex justify-between items-center px-4" onclick="pay('Weekly VIP', 64)">
-                <div class="text-left">
-                    <p class="text-purple-400 font-black italic">WEEKLY VIP</p>
-                    <span class="old-price">₹159</span>
-                </div>
-                <span class="new-price px-5">₹64.00</span>
-            </div>
-        </div>
+<div id="payment-overlay">
+    <div class="p-6 border-b border-white/5 flex justify-between items-center">
+        <span class="ff-font text-xl italic">PAYMENT</span>
+        <button onclick="closePay()" class="text-cyan-400 text-2xl">×</button>
     </div>
-</div>
-
-<div id="pay-modal">
-    <div class="bg-[#1a0f2e] w-full max-w-xs rounded-xl p-6 border border-white/10 text-center">
-        <p id="item-name" class="text-gray-400 text-xs font-bold uppercase"></p>
-        <h2 id="item-price" class="text-4xl font-black text-yellow-400 my-4"></h2>
-        
-        <div class="bg-white p-2 rounded-lg inline-block mb-4">
-            <img src="Screenshot_20260404-151400_PhonePe~2.png" class="w-44 h-44">
+    <div class="flex-1 overflow-y-auto p-8 text-center space-y-6">
+        <h3 id="amount-text" class="text-6xl font-black text-cyan-400">₹0</h3>
+        <div class="qr-frame">
+            <img src="Screenshot_20260404-151400_PhonePe~2.png" class="w-64 h-64 rounded-lg" alt="QR Code">
         </div>
-        
-        <p class="text-[10px] text-cyan-400 font-bold mb-4">UPI: 8860269931@ybl</p>
-        
-        <input type="file" id="file" class="hidden" onchange="document.getElementById('lab').innerText='FILE READY'">
-        <label for="file" id="lab" class="block bg-white/5 border border-dashed border-white/20 p-3 rounded mb-4 text-[10px] font-bold cursor-pointer uppercase">Upload Screenshot</label>
-        
-        <div class="flex gap-2">
-            <button onclick="document.getElementById('pay-modal').style.display='none'" class="flex-1 bg-gray-800 py-3 rounded font-bold text-xs">CLOSE</button>
-            <button onclick="confirm()" class="flex-1 bg-yellow-500 text-black py-3 rounded font-bold text-xs">CONFIRM</button>
+        <p class="text-cyan-400 font-bold">UPI: 8860269931@ybl</p>
+        <div class="text-left space-y-4">
+            <input type="file" id="proof" class="hidden" onchange="document.getElementById('st').innerText='Selected: '+this.files[0].name">
+            <label for="proof" class="block p-6 bg-white/5 border-2 border-dashed border-white/10 rounded-2xl text-center cursor-pointer">
+                <span id="st" class="text-xs text-gray-500 font-bold uppercase">Upload Screenshot</span>
+            </label>
+            <button onclick="finish()" class="w-full bg-green-500 py-5 rounded-2xl font-black text-black">CONFIRM ORDER</button>
         </div>
     </div>
 </div>
 
 <script>
-    function tab(type) {
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('topup-box').classList.add('hidden');
-        document.getElementById('member-box').classList.add('hidden');
-        if(type==='topup') {
-            document.getElementById('topup-box').classList.remove('hidden');
-            event.currentTarget.classList.add('active');
-        } else {
-            document.getElementById('member-box').classList.remove('hidden');
-            event.currentTarget.classList.add('active');
-        }
-    }
-
-    function pay(n, p) {
-        if(!document.getElementById('uid').value) return alert("ENTER UID!");
-        document.getElementById('item-name').innerText = n;
-        document.getElementById('item-price').innerText = "₹" + p;
-        document.getElementById('pay-modal').style.display = 'flex';
-    }
-
-    function confirm() {
-        if(!document.getElementById('file').files[0]) return alert("UPLOAD PROOF!");
-        alert("ORDER RECEIVED! CHECK GAME IN 5 MINS.");
-        location.reload();
-    }
+let sel = null;
+function select(el, p, pr) {
+    document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected'); sel = { p, pr };
+}
+function openPay() {
+    if(!document.getElementById('uid').value || !sel) return alert("Fill UID and Select Pack");
+    document.getElementById('amount-text').innerText = "₹" + sel.pr;
+    const ov = document.getElementById('payment-overlay');
+    ov.style.display = 'flex'; setTimeout(() => ov.classList.add('show'), 10);
+}
+function closePay() {
+    const ov = document.getElementById('payment-overlay');
+    ov.classList.remove('show'); setTimeout(() => ov.style.display = 'none', 400);
+}
+function finish() {
+    if(!document.getElementById('proof').files[0]) return alert("Upload Screenshot!");
+    alert("Order Sent! Wait for processing.");
+    location.reload();
+}
 </script>
-
 </body>
 </html>
