@@ -13,12 +13,13 @@
             text-align: center;
         }
         header {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             padding: 15px 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid #00ff9d;
         }
         .logo {
             font-size: 28px;
@@ -26,14 +27,35 @@
             color: #00ff9d;
         }
         .hero {
-            padding: 120px 20px 80px;
-            background: url('https://via.placeholder.com/1920x600/1a0033/00ff9d?text=Free+Fire+Top+Up') center/cover no-repeat;
+            padding: 140px 20px 80px;
+            background: linear-gradient(rgba(15, 12, 41, 0.7), rgba(15, 12, 41, 0.7)), url('https://via.placeholder.com/1920x600/1a0033/00ff9d?text=Free+Fire+Top+Up') center/cover no-repeat;
         }
         .hero h1 {
             font-size: 48px;
             margin: 0;
             text-shadow: 0 0 20px rgba(0, 255, 157, 0.6);
         }
+        
+        /* UID Input Styling */
+        .uid-container {
+            max-width: 400px;
+            margin: 20px auto;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid #00ff9d;
+        }
+        .uid-input {
+            width: 80%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            outline: none;
+        }
+
         .discount-badge {
             background: #ff0066;
             color: white;
@@ -52,6 +74,7 @@
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
+            transition: 0.3s;
         }
         .btn:hover {
             background: #00cc7a;
@@ -73,10 +96,12 @@
             width: 230px;
             transition: 0.3s;
             position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
         }
         .package:hover {
             transform: translateY(-10px);
             background: rgba(0, 255, 157, 0.15);
+            border-color: #00ff9d;
         }
         .diamonds {
             font-size: 32px;
@@ -94,6 +119,41 @@
             color: #ffd700;
             font-weight: bold;
         }
+
+        /* Payment Modal */
+        #payModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow-y: auto;
+        }
+        .modal-content {
+            background: #1a1a2e;
+            margin: 5% auto;
+            padding: 30px;
+            border: 2px solid #00ff9d;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .qr-img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 5px solid white;
+        }
+        .file-input {
+            margin: 15px 0;
+            color: #00ff9d;
+        }
+
         footer {
             background: #0a0a0a;
             padding: 30px;
@@ -111,113 +171,142 @@
         <h1>Free Fire Top Up</h1>
         <p>Buy FF Diamonds & Membership - Limited Time Mega Sale!</p>
         <p style="font-size:22px; color:#ff0066;"><strong>🔥 80% OFF ON ALL PACKAGES 🔥</strong></p>
-        <button class="btn" onclick="alert('Top Up page khul gaya! (Demo)')">Top Up Now - Instant Delivery</button>
+        
+        <div class="uid-container">
+            <p style="margin-top:0; color:#00ff9d;">Enter Free Fire UID</p>
+            <input type="number" id="playerUID" class="uid-input" placeholder="e.g. 123456789">
+        </div>
     </section>
 
     <section class="section">
         <h2>💎 Diamond Top Up Packages</h2>
         <div class="packages">
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
                 <div class="diamonds">100 💎</div>
                 <div class="original-price">₹ 80.00</div>
                 <div class="price">₹ 16</div>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Now</button>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('100 Diamonds', 16)">Buy Now</button>
             </div>
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
                 <div class="diamonds">310 💎</div>
                 <div class="original-price">₹ 240.00</div>
                 <div class="price">₹ 48</div>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Now</button>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('310 Diamonds', 48)">Buy Now</button>
             </div>
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
                 <div class="diamonds">520 💎</div>
                 <div class="original-price">₹ 400.00</div>
                 <div class="price">₹ 80</div>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Now</button>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('520 Diamonds', 80)">Buy Now</button>
             </div>
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
                 <div class="diamonds">1060 💎</div>
                 <div class="original-price">₹ 800.00</div>
                 <div class="price">₹ 160</div>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Now</button>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('1060 Diamonds', 160)">Buy Now</button>
             </div>
-
-            <div class="package">
-                <div class="discount-badge">80% OFF</div>
-                <div class="diamonds">2180 💎</div>
-                <div class="original-price">₹ 1,600.00</div>
-                <div class="price">₹ 320</div>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Now</button>
-            </div>
-
-            <div class="package">
-                <div class="discount-badge">80% OFF</div>
-                <div class="diamonds">5600 💎</div>
-                <div class="original-price">₹ 4,000.00</div>
-                <div class="price">₹ 800</div>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Now</button>
-            </div>
-
         </div>
     </section>
 
     <section class="section" style="background:rgba(0,0,0,0.5);">
         <h2>🎟️ Membership Packages</h2>
         <div class="packages">
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
                 <div class="diamonds">Weekly Lite</div>
                 <div class="original-price">₹ 50.00</div>
                 <div class="price">₹ 10</div>
                 <p style="font-size:14px; margin:10px 0;">90 Diamonds + Rewards</p>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Weekly Lite</button>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('Weekly Lite', 10)">Buy Weekly Lite</button>
             </div>
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
-                <div class="diamonds">Weekly Membership</div>
+                <div class="diamonds">Weekly</div>
                 <div class="original-price">₹ 159.00</div>
                 <div class="price">₹ 32</div>
-                <p style="font-size:14px; margin:10px 0;">445 Diamonds + Daily Rewards (7 Days)</p>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Weekly</button>
+                <p style="font-size:14px; margin:10px 0;">445 Diamonds + Rewards</p>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('Weekly Membership', 32)">Buy Weekly</button>
             </div>
-
             <div class="package">
                 <div class="discount-badge">80% OFF</div>
-                <div class="diamonds">Monthly Membership</div>
+                <div class="diamonds">Monthly</div>
                 <div class="original-price">₹ 799.00</div>
                 <div class="price">₹ 160</div>
-                <p style="font-size:14px; margin:10px 0;">2500 Diamonds + Full Month Rewards</p>
-                <button class="btn" style="padding:10px 25px; font-size:16px;">Buy Monthly</button>
+                <p style="font-size:14px; margin:10px 0;">2500 Diamonds + Rewards</p>
+                <button class="btn" style="padding:10px 25px; font-size:16px;" onclick="openPayment('Monthly Membership', 160)">Buy Monthly</button>
             </div>
-
         </div>
     </section>
 
-    <section class="section" style="background:rgba(0,0,0,0.4);">
-        <h2>How to Top Up?</h2>
-        <ol style="max-width:600px; margin:30px auto; text-align:left; font-size:18px;">
-            <li>Apna Free Fire UID daalo</li>
-            <li>Package choose karo (Diamonds ya Membership)</li>
-            <li>Payment karo (UPI, Card, Wallet)</li>
-            <li>Instant delivery - 1-3 minutes mein diamonds aur rewards mil jayenge!</li>
-        </ol>
-    </section>
+    <div id="payModal">
+        <div class="modal-content">
+            <h2 id="payItemName" style="color:#00ff9d; margin-bottom:5px;">Item Name</h2>
+            <p id="payItemPrice" style="font-size:24px; color:#ffd700; font-weight:bold; margin-top:0;">₹ 0</p>
+            
+            <p style="font-size:14px; color:#ccc;">Scan QR to Pay with Any UPI App</p>
+            
+            <img src="Screenshot_20260404-151400_PhonePe~2.png" alt="PhonePe QR" class="qr-img">
+            
+            <p style="background:rgba(0,255,157,0.1); padding:10px; border-radius:8px; font-size:14px;">
+                <strong>UPI ID:</strong> 8860269931@ybl
+            </p>
+
+            <div style="margin-top:20px; text-align:left;">
+                <p style="font-size:12px; margin-bottom:5px;">Step 2: Upload Payment Screenshot</p>
+                <input type="file" id="screenshot" class="file-input" accept="image/*">
+            </div>
+
+            <button class="btn" style="width:100%; margin-top:10px;" onclick="submitOrder()">Confirm Payment</button>
+            <button onclick="closeModal()" style="background:none; border:none; color:#888; cursor:pointer; margin-top:15px; text-decoration:underline;">Cancel</button>
+        </div>
+    </div>
 
     <footer>
         <p><strong>LootBar.gg</strong> - Safe & Trusted Free Fire Top Up</p>
-        <p>80% OFF Limited Time Offer • Real prices shown with heavy discount</p>
-        <p style="margin-top:20px; opacity:0.7;">Demo HTML Code • Official: <a href="https://lootbar.gg" target="_blank" style="color:#00ff9d;">https://lootbar.gg</a></p>
+        <p>80% OFF Limited Time Offer</p>
     </footer>
+
+    <script>
+        function openPayment(name, price) {
+            const uid = document.getElementById('playerUID').value;
+            if(!uid || uid.length < 5) {
+                alert("❌ Pehle apni Free Fire UID daalein!");
+                window.scrollTo(0, 0);
+                document.getElementById('playerUID').focus();
+                return;
+            }
+            
+            document.getElementById('payItemName').innerText = name;
+            document.getElementById('payItemPrice').innerText = "₹ " + price;
+            document.getElementById('payModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('payModal').style.display = "none";
+        }
+
+        function submitOrder() {
+            const file = document.getElementById('screenshot').files[0];
+            if(!file) {
+                alert("❌ Payment ka Screenshot upload karein!");
+                return;
+            }
+            alert("✅ Payment proof received! Aapka order 5-10 minutes mein process ho jayenge. UID: " + document.getElementById('playerUID').value);
+            closeModal();
+            location.reload();
+        }
+
+        // Close modal if user clicks outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('payModal')) {
+                closeModal();
+            }
+        }
+    </script>
 
 </body>
 </html>
