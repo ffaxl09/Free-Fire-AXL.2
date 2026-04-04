@@ -1,92 +1,118 @@
  <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF-AXL | Pro Gaming Store</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;700;900&display=swap');
-:root { --ff-dark: #070912; --ff-card: #121625; --ff-accent: #00e5ff; }
-body { background-color: var(--ff-dark); color: #ffffff; font-family: 'Inter', sans-serif; user-select: none; }
-.ff-font { font-family: 'Oswald', sans-serif; }
-.card-pro { background: var(--ff-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; transition: 0.3s; }
-.card-pro.selected { border-color: var(--ff-accent); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); transform: translateY(-4px); }
-.ff-btn-main { background: linear-gradient(90deg, #00e5ff, #00a2ff); color: #000; font-weight: 900; text-transform: uppercase; }
-#payment-overlay { transition: 0.4s; transform: translateY(100%); display: none; z-index: 100; position: fixed; inset: 0; background: #070912; }
-#payment-overlay.show { transform: translateY(0); display: flex; flex-direction: column; }
-.qr-frame { background: white; padding: 12px; border-radius: 16px; display: inline-block; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF-AXL | Pro Gaming Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;700;900&display=swap');
+        :root { --ff-dark: #070912; --ff-card: #121625; --ff-accent: #00e5ff; }
+        body { background-color: var(--ff-dark); color: #ffffff; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #070912 100%); user-select: none; }
+        .ff-font { font-family: 'Oswald', sans-serif; }
+        .card-pro { background: var(--ff-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; transition: all 0.3s; position: relative; }
+        .card-pro.selected { border-color: var(--ff-accent); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); transform: translateY(-4px); }
+        .badge-discount { background: #ff3e3e; color: white; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 4px; position: absolute; top: 10px; right: 10px; }
+        .ff-btn-main { background: linear-gradient(90deg, #00e5ff, #00a2ff); color: #000; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        #payment-overlay { transition: transform 0.4s; transform: translateY(100%); display: none; z-index: 100; }
+        #payment-overlay.show { transform: translateY(0); display: flex; }
+        .qr-frame { background: white; padding: 12px; border-radius: 16px; display: inline-block; }
+    </style>
 </head>
 <body class="pb-20">
 
-<header class="py-12 text-center border-b border-white/10">
-    <h1 class="ff-font text-5xl font-bold italic uppercase">FF-AXL <span class="text-cyan-400">PRO</span></h1>
-</header>
+    <header class="py-12 px-6 text-center border-b border-white/10">
+        <h1 class="ff-font text-5xl font-bold italic text-white uppercase">FF-AXL <span class="text-cyan-400">PRO</span></h1>
+        <p class="text-gray-500 text-xs mt-2 tracking-widest uppercase">100% Trusted Diamond Store</p>
+    </header>
 
-<main class="max-w-md mx-auto px-6 mt-8 space-y-6">
-    <div class="card-pro p-6">
-        <label class="text-[10px] font-black text-gray-500 uppercase block mb-2">Player UID</label>
-        <input type="number" id="uid" placeholder="ENTER UID" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xl font-bold text-white outline-none">
+    <main class="max-w-md mx-auto px-6 mt-8 space-y-6">
+        <div class="card-pro p-6 shadow-2xl">
+            <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-2">Player UID</label>
+            <input type="number" id="uid" placeholder="ENTER PLAYER UID" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xl font-bold text-white focus:outline-none focus:border-cyan-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, 'Weekly', 32)">
+                <div class="badge-discount">SAVE</div>
+                <i class="fas fa-crown text-2xl text-yellow-500 mb-2"></i>
+                <p class="text-xs text-gray-400 uppercase">Weekly</p>
+                <p class="text-xl font-black">₹32</p>
+            </div>
+            <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, '100 Diamonds', 16)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-8 h-8 mx-auto mb-2">
+                <p class="text-xs text-gray-400 uppercase">100 💎</p>
+                <p class="text-xl font-black">₹16</p>
+            </div>
+            <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, '310 Diamonds', 48)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-8 h-8 mx-auto mb-2">
+                <p class="text-xs text-gray-400 uppercase">310 💎</p>
+                <p class="text-xl font-black">₹48</p>
+            </div>
+            <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, '520 Diamonds', 80)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-8 h-8 mx-auto mb-2">
+                <p class="text-xs text-gray-400 uppercase">520 💎</p>
+                <p class="text-xl font-black">₹80</p>
+            </div>
+        </div>
+
+        <button onclick="openPay()" class="w-full ff-btn-main py-5 rounded-2xl text-xl font-black shadow-lg shadow-cyan-500/20">Proceed to Pay</button>
+    </main>
+
+    <div id="payment-overlay" class="fixed inset-0 bg-[#070912] flex-col">
+        <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+            <span class="ff-font text-xl text-white italic">PAYMENT STATUS</span>
+            <button onclick="closePay()" class="text-cyan-400 text-2xl"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-8 text-center space-y-6">
+            <h3 id="amount-text" class="text-6xl font-black text-cyan-400 ff-font">₹0</h3>
+            
+            <div class="qr-frame">
+                <img id="qr-img" src="Screenshot_20260404-151400_PhonePe~2.png" class="w-64 h-64 rounded-lg" alt="PhonePe QR">
+            </div>
+
+            <p class="text-cyan-400 font-bold text-sm uppercase tracking-tighter">UPI ID: 8860269931@ybl</p>
+            
+            <div class="text-left space-y-4">
+                <input type="file" id="proof" class="hidden" onchange="document.getElementById('st').innerText='Selected: '+this.files[0].name">
+                <label for="proof" class="block p-6 bg-white/5 border-2 border-dashed border-white/10 rounded-2xl text-center cursor-pointer">
+                    <span id="st" class="text-xs font-bold text-gray-500 uppercase">Upload Payment Screenshot</span>
+                </label>
+                <button onclick="finish()" class="w-full bg-green-500 py-5 rounded-2xl font-black text-black uppercase">Confirm Order</button>
+            </div>
+        </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
-        <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, 'Weekly', 32)">
-            <p class="text-xs text-gray-400">Weekly</p>
-            <p class="text-xl font-black">₹32</p>
-        </div>
-        <div class="card-pro p-5 text-center cursor-pointer" onclick="select(this, '100 Diamonds', 16)">
-            <p class="text-xs text-gray-400">100 💎</p>
-            <p class="text-xl font-black">₹16</p>
-        </div>
-    </div>
+    <div id="toast" class="fixed top-10 left-1/2 -translate-x-1/2 bg-cyan-500 text-black px-8 py-2 rounded-full font-black text-xs hidden z-[100]"></div>
 
-    <button onclick="openPay()" class="w-full ff-btn-main py-5 rounded-2xl text-xl font-black">Proceed to Pay</button>
-</main>
-
-<div id="payment-overlay">
-    <div class="p-6 border-b border-white/5 flex justify-between items-center">
-        <span class="ff-font text-xl italic">PAYMENT</span>
-        <button onclick="closePay()" class="text-cyan-400 text-2xl">×</button>
-    </div>
-    <div class="flex-1 overflow-y-auto p-8 text-center space-y-6">
-        <h3 id="amount-text" class="text-6xl font-black text-cyan-400">₹0</h3>
-        <div class="qr-frame">
-            <img src="Screenshot_20260404-151400_PhonePe~2.png" class="w-64 h-64 rounded-lg" alt="QR Code">
-        </div>
-        <p class="text-cyan-400 font-bold">UPI: 8860269931@ybl</p>
-        <div class="text-left space-y-4">
-            <input type="file" id="proof" class="hidden" onchange="document.getElementById('st').innerText='Selected: '+this.files[0].name">
-            <label for="proof" class="block p-6 bg-white/5 border-2 border-dashed border-white/10 rounded-2xl text-center cursor-pointer">
-                <span id="st" class="text-xs text-gray-500 font-bold uppercase">Upload Screenshot</span>
-            </label>
-            <button onclick="finish()" class="w-full bg-green-500 py-5 rounded-2xl font-black text-black">CONFIRM ORDER</button>
-        </div>
-    </div>
-</div>
-
-<script>
-let sel = null;
-function select(el, p, pr) {
-    document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected'); sel = { p, pr };
-}
-function openPay() {
-    if(!document.getElementById('uid').value || !sel) return alert("Fill UID and Select Pack");
-    document.getElementById('amount-text').innerText = "₹" + sel.pr;
-    const ov = document.getElementById('payment-overlay');
-    ov.style.display = 'flex'; setTimeout(() => ov.classList.add('show'), 10);
-}
-function closePay() {
-    const ov = document.getElementById('payment-overlay');
-    ov.classList.remove('show'); setTimeout(() => ov.style.display = 'none', 400);
-}
-function finish() {
-    if(!document.getElementById('proof').files[0]) return alert("Upload Screenshot!");
-    alert("Order Sent! Wait for processing.");
-    location.reload();
-}
-</script>
+    <script>
+        let sel = null;
+        function select(el, p, pr) {
+            document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected'); sel = { p, pr };
+        }
+        function showToast(m) {
+            const t = document.getElementById('toast'); t.innerText = m;
+            t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 3000);
+        }
+        function openPay() {
+            const u = document.getElementById('uid').value;
+            if(!u || u.length < 5) return showToast("ENTER VALID UID");
+            if(!sel) return showToast("SELECT PACK FIRST");
+            document.getElementById('amount-text').innerText = "₹" + sel.pr;
+            const ov = document.getElementById('payment-overlay');
+            ov.style.display = 'flex'; setTimeout(() => ov.classList.add('show'), 10);
+        }
+        function closePay() {
+            const ov = document.getElementById('payment-overlay');
+            ov.classList.remove('show'); setTimeout(() => ov.style.display = 'none', 400);
+        }
+        function finish() {
+            if(!document.getElementById('proof').files[0]) return showToast("UPLOAD SCREENSHOT!");
+            showToast("ORDER SENT! PLEASE WAIT...");
+            setTimeout(() => location.reload(), 3000);
+        }
+    </script>
 </body>
 </html>
