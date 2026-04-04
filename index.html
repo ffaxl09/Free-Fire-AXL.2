@@ -1,0 +1,336 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF-AXL | Pro Gaming Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;700;900&display=swap');
+
+        :root {
+            --ff-dark: #070912;
+            --ff-card: #121625;
+            --ff-gold: #ffcc00;
+            --ff-accent: #00e5ff;
+        }
+
+        body {
+            background-color: var(--ff-dark);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #070912 100%);
+            user-select: none;
+        }
+
+        .ff-font { font-family: 'Oswald', sans-serif; }
+
+        .header-gradient {
+            background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+        }
+
+        .card-pro {
+            background: var(--ff-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-pro.selected {
+            border-color: var(--ff-accent);
+            background: linear-gradient(145deg, #161c30 0%, #070912 100%);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+            transform: translateY(-4px);
+        }
+
+        .diamond-svg {
+            filter: drop-shadow(0 0 8px var(--ff-accent));
+        }
+
+        .badge-discount {
+            background: #ff3e3e;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 4px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .ff-btn-main {
+            background: linear-gradient(90deg, #00e5ff, #00a2ff);
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+            transition: all 0.2s;
+        }
+
+        .ff-btn-main:active { transform: scale(0.96); }
+
+        #payment-overlay {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100%);
+        }
+
+        #payment-overlay.show { transform: translateY(0); }
+
+        .qr-frame {
+            background: white;
+            padding: 12px;
+            border-radius: 16px;
+            display: inline-block;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="pb-20">
+
+    <!-- Navbar/Header -->
+    <header class="header-gradient py-12 px-6 text-center">
+        <h1 class="ff-font text-5xl font-bold tracking-tighter italic text-white uppercase">FF-AXL <span class="text-cyan-400">PRO</span></h1>
+        <div class="flex justify-center gap-3 mt-2">
+            <span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-cyan-500/30">Trusted Store</span>
+            <span class="text-[10px] bg-red-500/20 text-red-400 px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-red-500/30">80% Off</span>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-6 -mt-6 space-y-8">
+        
+        <!-- Player ID Section -->
+        <div class="card-pro p-6 shadow-2xl">
+            <label class="text-[11px] font-black text-gray-500 uppercase tracking-[0.2em] block mb-3">Player Identity</label>
+            <div class="relative">
+                <i class="fas fa-user-tag absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500"></i>
+                <input type="number" id="uid" placeholder="ENTER PLAYER UID" class="w-full bg-black/40 border border-white/10 p-4 pl-12 rounded-xl text-xl font-bold text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:text-gray-700">
+            </div>
+        </div>
+
+        <!-- Membership Selection -->
+        <div class="space-y-4">
+            <h2 class="ff-font text-2xl uppercase italic tracking-wide">Elite Membership</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card-pro p-6 text-center relative overflow-hidden" onclick="select(this, 'Weekly Membership', 32)">
+                    <div class="badge-discount">SAVE</div>
+                    <svg class="w-12 h-12 mx-auto mb-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#00e5ff" fill-opacity="0.3" stroke="#00e5ff" stroke-width="2"/>
+                    </svg>
+                    <p class="text-xs font-bold text-gray-400 uppercase">Weekly</p>
+                    <p class="text-xl font-black text-white">₹32</p>
+                </div>
+                <div class="card-pro p-6 text-center relative overflow-hidden" onclick="select(this, 'Monthly Membership', 160)">
+                    <div class="badge-discount">HOT</div>
+                    <svg class="w-12 h-12 mx-auto mb-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="#ffcc00" fill-opacity="0.3" stroke="#ffcc00" stroke-width="2"/>
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#ffcc00" stroke-width="2"/>
+                        <path d="M2 17L12 22L22 17" stroke="#ffcc00" stroke-width="2"/>
+                        <path d="M2 12L12 17L22 12" stroke="#ffcc00" stroke-width="2"/>
+                    </svg>
+                    <p class="text-xs font-bold text-gray-400 uppercase">Monthly</p>
+                    <p class="text-xl font-black text-white">₹160</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diamond Selection -->
+        <div class="space-y-4">
+            <h2 class="ff-font text-2xl uppercase italic tracking-wide">Diamond Bundles</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <!-- 100 -->
+                <div class="card-pro p-5 text-center relative" onclick="select(this, 100, 16)">
+                    <div class="badge-discount">-80%</div>
+                    <svg class="w-10 h-10 mx-auto mb-2 diamond-svg" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 9L12 22L22 9L12 2Z" fill="#00e5ff" fill-opacity="0.2" stroke="#00e5ff" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 9H22" stroke="#00e5ff" stroke-width="2"/>
+                        <path d="M7 9L12 2L17 9" stroke="#00e5ff" stroke-width="2"/>
+                    </svg>
+                    <p class="text-lg font-black italic">100 💎</p>
+                    <p class="text-cyan-400 font-bold">₹16</p>
+                </div>
+                <!-- 310 -->
+                <div class="card-pro p-5 text-center relative" onclick="select(this, 310, 48)">
+                    <div class="badge-discount">-80%</div>
+                    <svg class="w-10 h-10 mx-auto mb-2 diamond-svg" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 9L12 22L22 9L12 2Z" fill="#00e5ff" fill-opacity="0.3" stroke="#00e5ff" stroke-width="2"/>
+                        <path d="M5 9L12 22L19 9" stroke="#00e5ff" stroke-width="2"/>
+                    </svg>
+                    <p class="text-lg font-black italic">310 💎</p>
+                    <p class="text-cyan-400 font-bold">₹48</p>
+                </div>
+                <!-- 520 -->
+                <div class="card-pro p-5 text-center relative" onclick="select(this, 520, 80)">
+                    <div class="badge-discount">-80%</div>
+                    <svg class="w-10 h-10 mx-auto mb-2 diamond-svg" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 9L12 22L22 9L12 2Z" fill="#00e5ff" fill-opacity="0.4" stroke="#00e5ff" stroke-width="2"/>
+                        <path d="M12 22V9M2 9L12 2L22 9" stroke="#00e5ff" stroke-width="2"/>
+                    </svg>
+                    <p class="text-lg font-black italic">520 💎</p>
+                    <p class="text-cyan-400 font-bold">₹80</p>
+                </div>
+                <!-- 1060 -->
+                <div class="card-pro p-5 text-center relative" onclick="select(this, 1060, 160)">
+                    <div class="badge-discount">-80%</div>
+                    <svg class="w-12 h-12 mx-auto mb-2 diamond-svg" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L2 9L12 22L22 9L12 2Z" fill="#00e5ff" fill-opacity="0.5" stroke="#00e5ff" stroke-width="2"/>
+                        <path d="M7 9L12 22L17 9" stroke="#00e5ff" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" stroke="#00e5ff" stroke-width="1" stroke-dasharray="2 2"/>
+                    </svg>
+                    <p class="text-lg font-black italic">1060 💎</p>
+                    <p class="text-cyan-400 font-bold">₹160</p>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="openPay()" class="w-full ff-btn-main py-5 rounded-2xl text-xl font-black mb-10 shadow-cyan-500/20">
+            Proceed to Checkout
+        </button>
+    </main>
+
+    <!-- Payment Sheet -->
+    <div id="payment-overlay" class="fixed inset-0 bg-[#070912] z-50 flex flex-col hidden">
+        <div class="p-6 flex items-center gap-4 bg-white/5 border-b border-white/5">
+            <button onclick="closePay()" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full text-cyan-400">
+                <i class="fas fa-times"></i>
+            </button>
+            <span class="ff-font text-xl uppercase italic">Secure Checkout</span>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-8 space-y-8">
+            <div class="text-center">
+                <p id="item-info" class="text-gray-500 text-xs uppercase tracking-widest font-bold">Pack Selected</p>
+                <h3 id="amount-text" class="text-6xl font-black text-cyan-400 ff-font mt-1">₹0</h3>
+            </div>
+
+            <!-- DYNAMIC QR -->
+            <div class="text-center space-y-4 bg-white/5 p-8 rounded-3xl border border-white/5">
+                <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em]">Scan with any UPI App</p>
+                <div class="qr-frame">
+                    <img id="qr-img" src="" class="w-64 h-64 rounded-lg">
+                </div>
+                <div class="pt-2">
+                    <p class="text-cyan-400 font-bold text-sm">UPI: 8860269931@ybl</p>
+                </div>
+            </div>
+
+            <!-- Upload Box -->
+            <div class="space-y-4">
+                <input type="file" id="proof" class="hidden" onchange="onFile(this)">
+                <label for="proof" id="upload-box" class="flex flex-col items-center justify-center p-8 bg-black/40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer">
+                    <i class="fas fa-cloud-upload-alt text-3xl text-cyan-500 mb-3"></i>
+                    <span id="file-status" class="text-sm font-bold text-gray-500 text-center uppercase tracking-tighter">Click to upload payment proof</span>
+                </label>
+                <button onclick="finish()" class="w-full bg-green-500 py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl">
+                    Confirm Recharge
+                </button>
+            </div>
+            
+            <p class="text-center text-[10px] text-gray-700 uppercase tracking-widest">Diamonds will be credited instantly after verification</p>
+        </div>
+    </div>
+
+    <!-- Alert -->
+    <div id="toast" class="fixed top-10 left-1/2 -translate-x-1/2 bg-cyan-500 text-black px-8 py-3 rounded-full font-black text-xs uppercase hidden z-[100] shadow-2xl"></div>
+
+    <script>
+        const UPI_ID = "8860269931@ybl";
+        const NAME = "AXL STORE";
+        let selected = null;
+
+        function select(el, pack, price) {
+            document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selected = { pack, price };
+        }
+
+        function showToast(m) {
+            const t = document.getElementById('toast');
+            t.innerText = m;
+            t.classList.remove('hidden');
+            setTimeout(() => t.classList.add('hidden'), 3000);
+        }
+
+        function openPay() {
+            const u = document.getElementById('uid').value;
+            if(!u || u.length < 5) return showToast("❌ Enter Valid UID");
+            if(!selected) return showToast("💎 Select Pack First");
+
+            document.getElementById('amount-text').innerText = "₹" + selected.price;
+            document.getElementById('item-info').innerText = selected.pack + " Pack";
+
+            // Generate UPI Link
+            const upiUrl = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(NAME)}&am=${selected.price}&cu=INR`;
+            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUrl)}`;
+
+            const ov = document.getElementById('payment-overlay');
+            ov.classList.remove('hidden');
+            setTimeout(() => ov.classList.add('show'), 10);
+        }
+
+        function closePay() {
+            const ov = document.getElementById('payment-overlay');
+            ov.classList.remove('show');
+            setTimeout(() => ov.classList.add('hidden'), 400);
+        }
+
+        function onFile(input) {
+            if(input.files[0]) {
+                document.getElementById('file-status').innerText = "Selected: " + input.files[0].name;
+                document.getElementById('file-status').classList.replace('text-gray-500', 'text-cyan-400');
+                document.getElementById('upload-box').style.borderColor = "#00e5ff";
+            }
+        }
+
+        function finish() {
+            if(!document.getElementById('proof').files[0]) return showToast("📸 Upload Payment Proof!");
+            showToast("✅ Order Sent! Processing...");
+            setTimeout(() => location.reload(), 3000);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
