@@ -1,235 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF-AXL | Pro Gaming Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;700&display=swap');
-        
-        :root {
-            --ff-dark: #070912;
-            --ff-card: #121625;
-            --ff-gold: #ffcc00;
-            --ff-accent: #00e5ff;
-        }
-
-        body {
-            background-color: var(--ff-dark);
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #070912 100%);
-            user-select: none;
-        }
-
-        .ff-font { font-family: 'Oswald', sans-serif; }
-
-        .header-gradient {
-            background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, transparent 100%);
-            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-        }
-
-        .card-pro {
-            background: var(--ff-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-pro.selected {
-            border-color: var(--ff-accent);
-            background: linear-gradient(145deg, #161c30 0%, #070912 100%);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
-            transform: translateY(-4px);
-        }
-
-        .diamond-svg {
-            filter: drop-shadow(0 0 5px var(--ff-accent));
-        }
-
-        .badge-discount {
-            background: #ff3b3b;
-            color: white;
-            font-size: 10px;
-            font-weight: 900;
-            padding: 2px 8px;
-            border-radius: 4px;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        #payment-overlay {
-            backdrop-filter: blur(8px);
-            background: rgba(7, 9, 18, 0.95);
-            display: none;
-        }
-
-        #payment-overlay.show { display: flex; }
-
-        .btn-primary {
-            background: linear-gradient(90deg, #00e5ff 0%, #00a2ff 100%);
-            color: #000;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-        }
-
-        .btn-primary:active { transform: scale(0.95); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF-AXL | Pro Gaming Store</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;700;900&display=swap');
+:root {
+--ff-dark: #070912;
+--ff-card: #121625;
+--ff-gold: #ffcc00;
+--ff-accent: #00e5ff;
+}
+body {
+background-color: var(--ff-dark);
+color: #ffffff;
+font-family: 'Inter', sans-serif;
+background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #070912 100%);
+user-select: none;
+}
+.ff-font { font-family: 'Oswald', sans-serif; }
+.header-gradient {
+background: linear-gradient(180deg, rgba(0, 229, 255, 0.1) 0%, transparent 100%);
+border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+.card-pro {
+background: var(--ff-card);
+border: 1px solid rgba(255, 255, 255, 0.05);
+border-radius: 16px;
+transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-pro.selected {
+border-color: var(--ff-accent);
+background: linear-gradient(145deg, #161c30 0%, #070912 100%);
+box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+transform: translateY(-4px);
+}
+.diamond-svg {
+filter: drop-shadow(0 0 8px var(--ff-accent));
+}
+.badge-discount {
+background: #ff3e3e;
+color: white;
+font-size: 10px;
+font-weight: 900;
+padding: 2px 8px;
+border-radius: 4px;
+position: absolute;
+top: 10px;
+right: 10px;
+letter-spacing: 0.5px;
+}
+.ff-btn-main {
+background: linear-gradient(90deg, #00e5ff, #00a2ff);
+color: #000;
+font-weight: 900;
+text-transform: uppercase;
+letter-spacing: 1px;
+box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+transition: all 0.2s;
+}
+.ff-btn-main:active { transform: scale(0.96); }
+#payment-overlay {
+transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+transform: translateY(100%);
+display: none;
+}
+#payment-overlay.show { transform: translateY(0); display: flex; }
+.qr-frame {
+background: white;
+padding: 12px;
+border-radius: 16px;
+display: inline-block;
+box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+</style>
 </head>
-<body class="pb-10">
-
-    <header class="header-gradient py-6 px-4 mb-8 text-center">
-        <h1 class="ff-font text-4xl font-bold italic tracking-tighter text-white">
-            FF-AXL <span class="text-[#00e5ff]">STORE</span>
-        </h1>
-        <p class="text-gray-400 text-xs mt-1 uppercase tracking-widest">Instant Diamond Top-up</p>
-    </header>
-
-    <div class="max-w-md mx-auto px-4">
-        
-        <div class="card-pro p-5 mb-6">
-            <label class="block text-xs font-bold text-gray-400 uppercase mb-2 ml-1">Enter Player UID</label>
-            <div class="relative">
-                <i class="fas fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-[#00e5ff]"></i>
-                <input type="number" id="uid" placeholder="e.g. 123456789" 
-                    class="w-full bg-[#0a0d16] border border-gray-800 rounded-xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-[#00e5ff] transition-all font-bold">
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mb-24" id="packs-container">
-            <div class="card-pro p-4 relative cursor-pointer" onclick="selectPack(this, 100, 32)">
-                <div class="badge-discount">SAVE 20%</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-12 h-12 mx-auto mb-3 diamond-svg" alt="diamond">
-                <div class="text-center">
-                    <div class="ff-font text-xl font-bold">100+10</div>
-                    <div class="text-[#00e5ff] font-black text-lg">₹32</div>
-                </div>
-            </div>
-
-            <div class="card-pro p-4 relative cursor-pointer" onclick="selectPack(this, 310, 240)">
-                <div class="badge-discount">POPULAR</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-12 h-12 mx-auto mb-3 diamond-svg" alt="diamond">
-                <div class="text-center">
-                    <div class="ff-font text-xl font-bold">310+31</div>
-                    <div class="text-[#00e5ff] font-black text-lg">₹240</div>
-                </div>
-            </div>
-
-            <div class="card-pro p-4 relative cursor-pointer" onclick="selectPack(this, 520, 400)">
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-12 h-12 mx-auto mb-3 diamond-svg" alt="diamond">
-                <div class="text-center">
-                    <div class="ff-font text-xl font-bold">520+52</div>
-                    <div class="text-[#00e5ff] font-black text-lg">₹400</div>
-                </div>
-            </div>
-
-            <div class="card-pro p-4 relative cursor-pointer" onclick="selectPack(this, 1060, 800)">
-                <div class="badge-discount">BEST VALUE</div>
-                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-12 h-12 mx-auto mb-3 diamond-svg" alt="diamond">
-                <div class="text-center">
-                    <div class="ff-font text-xl font-bold">1060+106</div>
-                    <div class="text-[#00e5ff] font-black text-lg">₹800</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="fixed bottom-0 left-0 w-full p-4 bg-[#070912]/80 backdrop-blur-md border-t border-gray-800">
-            <button onclick="openPayment()" class="w-full btn-primary py-4 rounded-xl shadow-lg shadow-[#00e5ff]/20 text-lg">
-                Buy Now
-            </button>
-        </div>
-    </div>
-
-    <div id="payment-overlay" class="fixed inset-0 z-50 flex-col items-center justify-center p-6">
-        <button onclick="closePayment()" class="absolute top-6 right-6 text-gray-500 hover:text-white">
-            <i class="fas fa-times text-2xl"></i>
-        </button>
-
-        <div class="card-pro w-full max-w-sm p-6 text-center border-t-4 border-t-[#00e5ff]">
-            <h2 class="ff-font text-2xl font-bold mb-2 uppercase italic tracking-tighter">Secure Checkout</h2>
-            
-            <div class="my-6 p-4 bg-[#0a0d16] rounded-2xl border border-gray-800">
-                <div class="text-xs text-gray-500 uppercase font-bold mb-1">Weekly Membership Pack</div>
-                <div class="text-4xl font-black text-[#00e5ff] ff-font" id="amount-text">₹0</div>
-            </div>
-
-            <div class="bg-white p-3 rounded-2xl mb-4 w-56 mx-auto">
-                <img id="qr-img" src="Screenshot_20260404-151400_PhonePe~2.png" class="w-full h-auto" alt="Scan to Pay">
-            </div>
-
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-6">Diamonds will be credited instantly after verification</p>
-
-            <div class="space-y-3">
-                <div class="text-xs font-bold text-[#00e5ff] mb-4">
-                    UPI: <span id="upi-id">8860269931@ybl</span>
-                </div>
-                
-                <label for="proof" class="flex items-center justify-center gap-3 w-full bg-[#1a2235] border-2 border-dashed border-gray-700 p-4 rounded-xl cursor-pointer hover:border-[#00e5ff] transition-all group">
-                    <i class="fas fa-cloud-upload-alt text-2xl text-gray-500 group-hover:text-[#00e5ff]"></i>
-                    <span class="text-sm font-bold text-gray-400 group-hover:text-white" id="file-status">Click to Upload Payment Proof</span>
-                    <input type="file" id="proof" class="hidden" onchange="updateFileName()">
-                </label>
-
-                <button onclick="submitOrder()" class="w-full btn-primary py-4 rounded-xl mt-4">
-                    Confirm Order
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="fixed top-10 left-1/2 -translate-x-1/2 bg-cyan-500 text-black px-8 py-3 rounded-full font-black text-sm uppercase hidden z-[100] shadow-2xl">
-        Select Pack First
-    </div>
-
-    <script>
-        let selected = { pack: null, price: 0 };
-
-        function selectPack(el, pack, price) {
-            document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            selected = { pack, price };
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3000);
-        }
-
-        function openPayment() {
-            const uid = document.getElementById('uid').value;
-            if(!uid) return showToast("❌ Enter Valid UID");
-            if(!selected.pack) return showToast("💎 Select Pack First");
-
-            document.getElementById('amount-text').innerText = "₹" + selected.price;
-            document.getElementById('payment-overlay').classList.add('show');
-        }
-
-        function closePayment() {
-            document.getElementById('payment-overlay').classList.remove('show');
-        }
-
-        function updateFileName() {
-            const input = document.getElementById('proof');
-            const status = document.getElementById('file-status');
-            if(input.files.length > 0) {
-                status.innerText = "Selected: " + input.files[0].name;
-                status.classList.replace('text-gray-500', 'text-cyan-400');
-            }
-        }
-
-        function submitOrder() {
-            if(!document.getElementById('proof').files[0]) return showToast("📸 Upload Payment Proof!");
-            showToast("🚀 Order Sent! Processing...");
-            setTimeout(() => location.reload(), 3000);
-        }
-    </script>
+<body class="pb-20">
+<header class="header-gradient py-12 px-6 text-center">
+<h1 class="ff-font text-5xl font-bold tracking-tighter italic text-white uppercase">FF-AXL <span class="text-cyan-400">PRO</span></h1>
+<div class="flex justify-center gap-3 mt-2">
+<span class="text-[10px] bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-cyan-500/30">Trusted Store</span>
+<span class="text-[10px] bg-red-500/20 text-red-400 px-3 py-1 rounded-full font-bold uppercase tracking-widest border border-red-500/30">80% Off</span>
+</div>
+</header>
+<main class="max-w-md mx-auto px-6 -mt-6 space-y-8">
+<div class="card-pro p-6 shadow-2xl">
+<label class="text-[11px] font-black text-gray-500 uppercase tracking-[0.2em] block mb-3">Player Identity</label>
+<div class="relative">
+<i class="fas fa-user-tag absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500"></i>
+<input type="number" id="uid" placeholder="ENTER PLAYER UID" class="w-full bg-black/40 border border-white/10 p-4 pl-12 rounded-xl text-xl font-bold text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:text-gray-700">
+</div>
+</div>
+<div class="space-y-4">
+<h2 class="ff-font text-2xl uppercase italic tracking-wide">Elite Membership</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="card-pro p-6 text-center relative overflow-hidden" onclick="select(this, 'Weekly Membership', 32)">
+<div class="badge-discount">SAVE</div>
+<i class="fas fa-gem text-3xl text-cyan-400 mb-3"></i>
+<p class="text-xs font-bold text-gray-400 uppercase">Weekly</p>
+<p class="text-xl font-black text-white">₹32</p>
+</div>
+<div class="card-pro p-6 text-center relative overflow-hidden" onclick="select(this, 'Monthly Membership', 160)">
+<div class="badge-discount">HOT</div>
+<i class="fas fa-crown text-3xl text-yellow-500 mb-3"></i>
+<p class="text-xs font-bold text-gray-400 uppercase">Monthly</p>
+<p class="text-xl font-black text-white">₹160</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h2 class="ff-font text-2xl uppercase italic tracking-wide">Diamond Bundles</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="card-pro p-5 text-center relative" onclick="select(this, '100 Diamonds', 16)">
+<div class="badge-discount">-80%</div>
+<p class="text-lg font-black italic">100 💎</p>
+<p class="text-cyan-400 font-bold">₹16</p>
+</div>
+<div class="card-pro p-5 text-center relative" onclick="select(this, '310 Diamonds', 48)">
+<div class="badge-discount">-80%</div>
+<p class="text-lg font-black italic">310 💎</p>
+<p class="text-cyan-400 font-bold">₹48</p>
+</div>
+<div class="card-pro p-5 text-center relative" onclick="select(this, '520 Diamonds', 80)">
+<div class="badge-discount">-80%</div>
+<p class="text-lg font-black italic">520 💎</p>
+<p class="text-cyan-400 font-bold">₹80</p>
+</div>
+<div class="card-pro p-5 text-center relative" onclick="select(this, '1060 Diamonds', 160)">
+<div class="badge-discount">-80%</div>
+<p class="text-lg font-black italic">1060 💎</p>
+<p class="text-cyan-400 font-bold">₹160</p>
+</div>
+</div>
+</div>
+<button onclick="openPay()" class="w-full ff-btn-main py-5 rounded-2xl text-xl font-black mb-10 shadow-cyan-500/20">
+Proceed to Checkout
+</button>
+</main>
+<div id="payment-overlay" class="fixed inset-0 bg-[#070912] z-50 flex flex-col">
+<div class="p-6 flex items-center gap-4 bg-white/5 border-b border-white/5">
+<button onclick="closePay()" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full text-cyan-400">
+<i class="fas fa-times"></i>
+</button>
+<span class="ff-font text-xl uppercase italic text-white">Secure Checkout</span>
+</div>
+<div class="flex-1 overflow-y-auto p-8 space-y-8 text-center">
+<div>
+<p id="item-info" class="text-gray-500 text-xs uppercase tracking-widest font-bold">Pack Selected</p>
+<h3 id="amount-text" class="text-6xl font-black text-cyan-400 ff-font mt-1">₹0</h3>
+</div>
+<div class="bg-white/5 p-8 rounded-3xl border border-white/5">
+<p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-4">Scan with any UPI App</p>
+<div class="qr-frame">
+<img id="qr-img" src="Screenshot_20260404-151400_PhonePe~2.png" class="w-64 h-64 rounded-lg">
+</div>
+<div class="pt-4">
+<p class="text-cyan-400 font-bold text-sm">UPI: 8860269931@ybl</p>
+</div>
+</div>
+<div class="space-y-4 text-left">
+<input type="file" id="proof" class="hidden" onchange="onFile(this)">
+<label for="proof" id="upload-box" class="flex flex-col items-center justify-center p-8 bg-black/40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer">
+<i class="fas fa-cloud-upload-alt text-3xl text-cyan-500 mb-3"></i>
+<span id="file-status" class="text-sm font-bold text-gray-500 text-center uppercase tracking-tighter">Click to upload payment proof</span>
+</label>
+<button onclick="finish()" class="w-full bg-green-500 py-5 rounded-2xl font-black uppercase text-sm tracking-widest text-black shadow-xl">
+Confirm Recharge
+</button>
+</div>
+</div>
+</div>
+<div id="toast" class="fixed top-10 left-1/2 -translate-x-1/2 bg-cyan-500 text-black px-8 py-3 rounded-full font-black text-xs uppercase hidden z-[100] shadow-2xl"></div>
+<script>
+let selected = null;
+function select(el, pack, price) {
+document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
+el.classList.add('selected');
+selected = { pack, price };
+}
+function showToast(m) {
+const t = document.getElementById('toast');
+t.innerText = m;
+t.classList.remove('hidden');
+setTimeout(() => t.classList.add('hidden'), 3000);
+}
+function openPay() {
+const u = document.getElementById('uid').value;
+if(!u || u.length < 5) return showToast("❌ Enter Valid UID");
+if(!selected) return showToast("💎 Select Pack First");
+document.getElementById('amount-text').innerText = "₹" + selected.price;
+document.getElementById('item-info').innerText = selected.pack;
+const ov = document.getElementById('payment-overlay');
+ov.style.display = 'flex';
+setTimeout(() => ov.classList.add('show'), 10);
+}
+function closePay() {
+const ov = document.getElementById('payment-overlay');
+ov.classList.remove('show');
+setTimeout(() => ov.style.display = 'none', 400);
+}
+function onFile(input) {
+if(input.files[0]) {
+document.getElementById('file-status').innerText = "Selected: " + input.files[0].name;
+document.getElementById('file-status').classList.replace('text-gray-500', 'text-cyan-400');
+}
+}
+function finish() {
+if(!document.getElementById('proof').files[0]) return showToast("📸 Upload Payment Proof!");
+showToast("✅ Order Sent! Processing...");
+setTimeout(() => location.reload(), 3000);
+}
+</script>
 </body>
 </html>
