@@ -1,166 +1,248 @@
  <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF-AXL | Pro Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@700;900&display=swap');
-        :root { --game-purple: #2a1b3d; --game-yellow: #ffcc00; --game-bg: #0f081d; }
-        body { background-color: var(--game-bg); color: white; font-family: 'Kanit', sans-serif; user-select: none; }
-        
-        .sidebar { width: 85px; background: #0a0514; border-right: 1px solid rgba(255,255,255,0.1); }
-        .nav-item { padding: 25px 0; text-align: center; font-size: 10px; color: #555; cursor: pointer; transition: 0.3s; }
-        .nav-item.active { color: var(--game-yellow); background: linear-gradient(90deg, rgba(255,204,0,0.15), transparent); border-left: 4px solid var(--game-yellow); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF-AXL | Official Game Store</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@700;900&display=swap');
+    
+    :root {
+        --game-purple: #2a1b3d;
+        --game-sidebar: #1a0f2e;
+        --game-yellow: #ffcc00;
+        --game-card: #3b2a5a;
+        --game-accent: #00e5ff;
+    }
 
-        .diamond-card { background: #2d1b4d; border-radius: 8px; border-bottom: 4px solid rgba(0,0,0,0.5); position: relative; overflow: hidden; }
-        .discount-tag { position: absolute; top: 0; left: 0; background: #ff3e3e; color: white; font-size: 10px; padding: 2px 8px; border-radius: 0 0 10px 0; font-weight: 900; z-index: 10; }
-        
-        .old-price { text-decoration: line-through; color: #999; font-size: 11px; margin-bottom: -4px; }
-        .price-btn { background: var(--game-yellow); color: black; font-weight: 900; clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); width: 100%; padding: 6px 0; margin-top: 5px; font-size: 14px; }
-        
-        #payment-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; z-index: 1000; align-items: center; justify-content: center; }
-        .membership-card { background: linear-gradient(135deg, #3b2a5a 0%, #2a1b3d 100%); border: 1px solid rgba(255,255,255,0.1); }
-    </style>
+    body {
+        background-color: #0f081d;
+        color: white;
+        font-family: 'Kanit', sans-serif;
+        margin: 0;
+        overflow-x: hidden;
+        user-select: none;
+    }
+
+    /* Game Style Side Tab Navigation */
+    .game-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 80px;
+        background: var(--game-sidebar);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        border-right: 2px solid rgba(255,255,255,0.05);
+    }
+
+    .nav-item {
+        width: 100%;
+        padding: 15px 0;
+        text-align: center;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 900;
+        color: #555;
+        border-left: 4px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .nav-item.active {
+        background: linear-gradient(90deg, rgba(255,204,0,0.2), transparent);
+        color: var(--game-yellow);
+        border-left-color: var(--game-yellow);
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 15px;
+        background: radial-gradient(circle at top right, #2a1b3d, #1a0f2e);
+    }
+
+    /* In-Game Card Look */
+    .game-card {
+        background: var(--game-card);
+        border-radius: 8px;
+        padding: 12px 8px;
+        text-align: center;
+        position: relative;
+        border-bottom: 4px solid rgba(0,0,0,0.3);
+        transition: transform 0.1s ease;
+    }
+
+    .game-card:active {
+        transform: scale(0.95);
+    }
+
+    .price-btn {
+        background: var(--game-yellow);
+        color: black;
+        font-weight: 900;
+        padding: 4px;
+        border-radius: 4px;
+        margin-top: 8px;
+        display: block;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    .diamond-icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        filter: drop-shadow(0 0 5px var(--game-accent));
+    }
+
+    /* UID Section Styling */
+    .uid-section {
+        background: rgba(0,0,0,0.3);
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Hidden Sections */
+    .hidden {
+        display: none !important;
+    }
+
+    /* Payment Sheet Overlay */
+    #payment-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.85);
+        display: none;
+        z-index: 100;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+</style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="pb-20">
 
-    <header class="bg-[#1a0f2e] p-4 flex justify-between items-center border-b border-white/10 shadow-xl">
-        <div class="italic text-2xl font-black italic tracking-tighter">FF-AXL <span class="text-yellow-400">STORE</span></div>
-        <div class="bg-cyan-500/10 px-4 py-1 rounded-full border border-cyan-500/30 text-[10px] text-cyan-400 font-bold uppercase">Official Top-Up Center</div>
-    </header>
-
-    <div class="flex flex-1 overflow-hidden">
-        <div class="sidebar flex flex-col">
-            <div id="t-topup" class="nav-item active" onclick="switchTab('topup')">
-                <i class="fas fa-gem text-2xl mb-1"></i><br>TOP-UP
-            </div>
-            <div id="t-member" class="nav-item" onclick="switchTab('member')">
-                <i class="fas fa-crown text-2xl mb-1"></i><br>MEMBER
-            </div>
+<div class="game-container">
+    <div class="sidebar">
+        <div id="tab-topup" class="nav-item active" onclick="switchTab('topup')">
+            <i class="fas fa-gem text-xl mb-1"></i><br>TOP-UP
         </div>
-
-        <main class="flex-1 p-5 overflow-y-auto bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
-            <div class="bg-black/40 p-4 rounded-xl border border-white/5 mb-8 shadow-inner">
-                <p class="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-2 italic">Player Identity (UID)</p>
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-user-circle text-yellow-500 text-xl"></i>
-                    <input type="number" id="uid" placeholder="ENTER PLAYER UID..." class="bg-transparent border-none outline-none text-yellow-400 font-black text-lg w-full placeholder:text-gray-700 italic">
-                </div>
-            </div>
-
-            <div id="section-topup" class="grid grid-cols-2 gap-4">
-                <div class="diamond-card p-4 flex flex-col items-center" onclick="openPay('100 Diamonds', 32, 80)">
-                    <div class="discount-tag">-60% OFF</div>
-                    <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-12 h-10 my-2 drop-shadow-lg">
-                    <p class="text-xs text-gray-300 font-bold">100 Diamonds</p>
-                    <span class="old-price">₹80</span>
-                    <div class="price-btn">₹32.00</div>
-                </div>
-                <div class="diamond-card p-4 flex flex-col items-center" onclick="openPay('310 Diamonds', 96, 240)">
-                    <div class="discount-tag">-60% OFF</div>
-                    <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-14 h-12 my-2 drop-shadow-lg">
-                    <p class="text-xs text-gray-300 font-bold">310 Diamonds</p>
-                    <span class="old-price">₹240</span>
-                    <div class="price-btn">₹96.00</div>
-                </div>
-                <div class="diamond-card p-4 flex flex-col items-center" onclick="openPay('520 Diamonds', 160, 400)">
-                    <div class="discount-tag">-60% OFF</div>
-                    <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-16 h-14 my-2 drop-shadow-lg">
-                    <p class="text-xs text-gray-300 font-bold">520 Diamonds</p>
-                    <span class="old-price">₹400</span>
-                    <div class="price-btn">₹160.00</div>
-                </div>
-                <div class="diamond-card p-4 flex flex-col items-center" onclick="openPay('1060 Diamonds', 320, 800)">
-                    <div class="discount-tag">-60% OFF</div>
-                    <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="w-20 h-16 my-2 drop-shadow-lg">
-                    <p class="text-xs text-gray-300 font-bold">1060 Diamonds</p>
-                    <span class="old-price">₹800</span>
-                    <div class="price-btn">₹320.00</div>
-                </div>
-            </div>
-
-            <div id="section-member" class="hidden space-y-4">
-                <div class="membership-card p-5 rounded-xl flex justify-between items-center relative overflow-hidden" onclick="openPay('Weekly Membership', 64, 159)">
-                    <div class="discount-tag">BEST VALUE</div>
-                    <div>
-                        <p class="text-cyan-400 font-black text-lg italic">WEEKLY MEMBERSHIP</p>
-                        <p class="text-[10px] text-gray-400 font-bold">INSTANT 100💎 + DAILY REWARDS</p>
-                        <span class="old-price">Pehle: ₹159</span>
-                    </div>
-                    <div class="text-right">
-                        <div class="price-btn px-6 w-auto">Ab: ₹64.00</div>
-                    </div>
-                </div>
-                <div class="membership-card p-5 rounded-xl flex justify-between items-center relative overflow-hidden" onclick="openPay('Monthly Membership', 320, 799)">
-                    <div class="discount-tag">VIP STATUS</div>
-                    <div>
-                        <p class="text-purple-400 font-black text-lg italic">MONTHLY MEMBERSHIP</p>
-                        <p class="text-[10px] text-gray-400 font-bold">INSTANT 500💎 + MONTHLY REWARDS</p>
-                        <span class="old-price">Pehle: ₹799</span>
-                    </div>
-                    <div class="text-right">
-                        <div class="price-btn px-6 w-auto">Ab: ₹320.00</div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <div id="payment-modal">
-        <div class="bg-[#1a0f2e] w-[90%] max-w-sm rounded-2xl p-6 border-2 border-yellow-500/40 text-center shadow-[0_0_50px_rgba(0,0,0,0.8)]">
-            <h2 id="m-name" class="text-yellow-400 font-black italic tracking-widest"></h2>
-            <div class="flex justify-center items-baseline gap-2 mt-2 mb-6">
-                <span id="m-old" class="text-gray-500 line-through text-sm"></span>
-                <span id="m-new" class="text-4xl font-black text-white italic"></span>
-            </div>
-            
-            <div class="bg-white p-3 rounded-2xl inline-block mb-4 shadow-2xl">
-                <img src="Screenshot_20260404-151400_PhonePe~2.png" class="w-52 h-52">
-            </div>
-            
-            <p class="text-[10px] text-cyan-400 font-bold mb-4 tracking-tighter">UPI ID: 8860269931@ybl</p>
-            
-            <input type="file" id="ss" class="hidden" onchange="document.getElementById('ss-label').innerText='FILE LOADED ✅'">
-            <label for="ss" id="ss-label" class="block bg-white/5 border-2 border-dashed border-white/10 p-4 rounded-xl mb-6 text-[11px] font-bold cursor-pointer uppercase hover:bg-white/10 transition">Upload Payment Screenshot</label>
-            
-            <div class="flex gap-3">
-                <button onclick="document.getElementById('payment-modal').style.display='none'" class="flex-1 bg-gray-800 py-4 rounded-xl text-xs font-bold uppercase tracking-widest">Back</button>
-                <button onclick="confirm()" class="flex-1 bg-yellow-500 text-black py-4 rounded-xl text-sm font-black uppercase tracking-widest shadow-lg shadow-yellow-500/20">Buy Now</button>
-            </div>
+        <div id="tab-membership" class="nav-item" onclick="switchTab('membership')">
+            <i class="fas fa-id-card text-xl mb-1"></i><br>MEMBER
         </div>
     </div>
 
-    <script>
-        function switchTab(type) {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById('section-topup').classList.add('hidden');
-            document.getElementById('section-member').classList.add('hidden');
-            
-            if(type === 'topup') {
-                document.getElementById('section-topup').classList.remove('hidden');
-                document.getElementById('t-topup').classList.add('active');
-            } else {
-                document.getElementById('section-member').classList.remove('hidden');
-                document.getElementById('t-member').classList.add('active');
-            }
-        }
+    <div class="main-content">
+        <div class="uid-section">
+            <p class="text-[9px] text-gray-500 font-bold uppercase mb-1 tracking-widest">Player Identification</p>
+            <input type="number" id="uid" placeholder="ENTER PLAYER UID" class="w-full bg-black/40 border-none p-3 rounded text-yellow-400 font-bold outline-none italic placeholder:text-gray-700">
+        </div>
 
-        function openPay(name, newPrice, oldPrice) {
-            if(!document.getElementById('uid').value || document.getElementById('uid').value.length < 5) return alert("❌ First Enter Player UID!");
-            document.getElementById('m-name').innerText = name.toUpperCase();
-            document.getElementById('m-old').innerText = "₹" + oldPrice;
-            document.getElementById('m-new').innerText = "₹" + newPrice + ".00";
-            document.getElementById('payment-modal').style.display = 'flex';
-        }
+        <div id="topup-grid" class="grid grid-cols-2 gap-3">
+            <div class="game-card" onclick="openPay('100 Diamonds', 32)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-icon">
+                <p class="text-[11px] font-bold mt-2">100</p>
+                <span class="price-btn">₹32.00</span>
+            </div>
+            <div class="game-card" onclick="openPay('310 Diamonds', 96)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-icon">
+                <p class="text-[11px] font-bold mt-2">310</p>
+                <span class="price-btn">₹96.00</span>
+            </div>
+            <div class="game-card" onclick="openPay('520 Diamonds', 160)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-icon">
+                <p class="text-[11px] font-bold mt-2">520</p>
+                <span class="price-btn">₹160.00</span>
+            </div>
+            <div class="game-card" onclick="openPay('1060 Diamonds', 320)">
+                <img src="https://i.ibb.co/X7ypYpY/diamond.png" class="diamond-icon">
+                <p class="text-[11px] font-bold mt-2">1060</p>
+                <span class="price-btn">₹320.00</span>
+            </div>
+        </div>
 
-        function confirm() {
-            if(!document.getElementById('ss').files[0]) return alert("📸 Please Upload Payment Screenshot!");
-            alert("✅ PAYMENT SUBMITTED! Verification will take 5-10 minutes.");
-            location.reload();
+        <div id="membership-grid" class="hidden space-y-3">
+            <div class="game-card flex justify-between items-center px-4" onclick="openPay('Weekly Lite', 20)">
+                <div class="text-left">
+                    <p class="text-cyan-400 font-black italic">WEEKLY LITE</p>
+                    <p class="text-[10px] text-gray-400">Pehle: ₹50</p>
+                </div>
+                <span class="price-btn w-auto px-5">₹20.00</span>
+            </div>
+            <div class="game-card flex justify-between items-center px-4" onclick="openPay('Weekly VIP', 64)">
+                <div class="text-left">
+                    <p class="text-purple-400 font-black italic">WEEKLY VIP</p>
+                    <p class="text-[10px] text-gray-400">Pehle: ₹159</p>
+                </div>
+                <span class="price-btn w-auto px-5">₹64.00</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="payment-modal">
+    <div class="bg-[#1a0f2e] w-full max-w-sm rounded-xl p-6 border-2 border-yellow-500/30 text-center">
+        <h2 id="modal-item" class="text-yellow-400 font-black italic tracking-widest mb-1">TOP-UP</h2>
+        <h1 id="modal-price" class="text-5xl font-black mb-4 italic">₹0</h1>
+        
+        <div class="bg-white p-2 rounded-lg inline-block shadow-2xl mb-4">
+            <img src="Screenshot_20260404-151400_PhonePe~2.png" class="w-48 h-48" alt="QR Code">
+        </div>
+        
+        <p class="text-[10px] text-cyan-400 font-bold mb-4 tracking-tighter">UPI ID: 8860269931@ybl</p>
+        
+        <input type="file" id="proof" class="hidden" onchange="document.getElementById('up-txt').innerText='READY TO SEND ✅'">
+        <label for="proof" id="up-txt" class="block bg-white/5 border border-dashed border-white/20 p-3 rounded mb-4 text-[10px] font-bold cursor-pointer uppercase">Upload Screenshot</label>
+        
+        <div class="flex gap-2 pt-2">
+            <button onclick="closePay()" class="flex-1 bg-gray-700 py-3 rounded text-xs font-bold">CLOSE</button>
+            <button onclick="confirm()" class="flex-1 bg-yellow-500 text-black py-3 rounded text-xs font-black">CONFIRM ORDER</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(type) {
+        // Sidebar icons active state
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById('topup-grid').classList.add('hidden');
+        document.getElementById('membership-grid').classList.add('hidden');
+        
+        if(type === 'topup') {
+            document.getElementById('topup-grid').classList.remove('hidden');
+            document.getElementById('tab-topup').classList.add('active');
+        } else {
+            document.getElementById('membership-grid').classList.remove('hidden');
+            document.getElementById('tab-membership').classList.add('active');
         }
-    </script>
+    }
+
+    function openPay(name, price) {
+        const uid = document.getElementById('uid').value;
+        if(!uid || uid.length < 5) return alert("ENTER VALID UID FIRST!");
+        
+        document.getElementById('modal-item').innerText = name.toUpperCase();
+        document.getElementById('modal-price').innerText = "₹" + price + ".00";
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+
+    function closePay() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+
+    function confirm() {
+        if(!document.getElementById('proof').files[0]) return alert("UPLOAD PAYMENT SCREENSHOT!");
+        alert("PAYMENT RECEIVED! DIAMONDS WILL BE ADDED SHORTLY.");
+        location.reload();
+    }
+</script>
+
 </body>
 </html>
