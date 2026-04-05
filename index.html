@@ -62,9 +62,9 @@ body { background-color: #070912; color: #ffffff; font-family: 'Inter', sans-ser
 </div>
 
 <script>
-// --- AUTOMATIC TELEGRAM CONFIG ---
+// --- TELEGRAM CONFIG ---
 const BOT_TOKEN = "8708010864:AAH8ImmwqcPK00Vga9IOsXbvtmiuEmgLixE"; 
-const CHAT_ID = "8708010864"; 
+const CHAT_ID = "6097759794"; 
 // -----------------------
 
 let selected = null;
@@ -75,8 +75,8 @@ function select(el, pack, price) {
 }
 function openPay() {
     const u = document.getElementById('uid').value;
-    if(!u || u.length < 5) return alert("❌ Enter Valid UID");
-    if(!selected) return alert("💎 Select Diamond Pack");
+    if(!u || u.length < 5) return alert("❌ Valid UID dalien");
+    if(!selected) return alert("💎 Pack select karein");
     document.getElementById('item-name').innerText = selected.pack;
     document.getElementById('item-price').innerText = "₹" + selected.price;
     document.getElementById('payment-overlay').style.display = "block";
@@ -91,10 +91,10 @@ async function finish() {
 
     if(!proof) return alert("📸 Screenshot upload karein!");
     
-    btn.innerText = "SENDING ORDER...";
+    btn.innerText = "SENDING...";
     btn.disabled = true;
 
-    const text = `🔥 NEW ORDER RECIEVED! 🔥\n\n👤 Player UID: ${uid}\n💎 Package: ${selected.pack}\n💸 Amount: ₹${selected.price}\n\n✅ Check screenshot below.`;
+    const text = `🔥 NEW ORDER! 🔥\n\n🆔 UID: ${uid}\n💎 Pack: ${selected.pack}\n💰 Amount: ₹${selected.price}`;
     
     const formData = new FormData();
     formData.append('chat_id', CHAT_ID);
@@ -106,10 +106,10 @@ async function finish() {
             method: 'POST',
             body: formData
         });
-        alert("✅ Success! Your order has been sent to our team via Telegram.");
+        alert("✅ Order Successfully Sent! Check Telegram.");
         location.reload();
     } catch (err) {
-        alert("❌ Error! Bot config issue. Please check Token.");
+        alert("❌ Error sending order. Check Token/ChatID.");
         btn.disabled = false;
         btn.innerText = "Submit Order";
     }
